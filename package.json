@@ -1,0 +1,42 @@
+{
+  "name": "red-keep",
+  "description": "GraphQL interface for episodehunters database",
+  "version": "1.0.0",
+  "scripts": {
+    "test": "jest",
+    "start": "tsc --watch"
+  },
+  "author": "tjoskar <kontakta@oskarkarlsson.nu>",
+  "bugs": {
+    "url": "https://github.com/episodehunter/red-keep/issues",
+    "email": "kontakta@oskarkarlsson.nu"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "@types/jest": "*",
+    "typescript": "*",
+    "jest": "*",
+    "ts-jest": "*"
+  },
+  "homepage": "https://github.com/episodehunter/red-keep",
+  "keywords": [
+    ""
+  ],
+  "license": "MIT",
+  "main": "dist/index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/episodehunter/red-keep"
+  },
+  "jest": {
+    "transform": {
+      "^.+\\.ts$": "<rootDir>/node_modules/ts-jest/preprocessor.js"
+    },
+    "testRegex": "src/.*\\.(test|spec)\\.(ts|tsx|js)$",
+    "moduleFileExtensions": [
+      "ts",
+      "js",
+      "json"
+    ]
+  }
+}
