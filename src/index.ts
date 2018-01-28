@@ -2,6 +2,8 @@ import { makeExecutableSchema } from 'graphql-tools'
 import { graphqlExpress, graphiqlExpress } from 'apollo-server-express'
 import { json } from 'body-parser'
 import * as express from 'express'
+import { Context } from './types/context.type'
+import { connect } from './database'
 import { ShowDefinitions, ShowResolver } from './show/show'
 
 const SchemaDefinition = `
@@ -20,7 +22,7 @@ const rootResolvers = ShowResolver
 
 const schema = makeExecutableSchema({
   typeDefs: [SchemaDefinition, RootQuery, ...ShowDefinitions],
-  resolvers: rootResolvers,
+  resolvers: rootResolvers as any,
   allowUndefinedInResolve: false
 })
 
@@ -29,17 +31,12 @@ const app = express()
 app.use(
   '/graphql',
   json(),
-  graphqlExpress(async req => {
-    await new Promise(r => setTimeout(r, 5000))
-    return {
-      schema,
-      context: {
-        db: function() {
-          return 5
-        }
-      }
-    }
-  })
+  graphqlExpress(req => ({
+    schema,
+    context: {
+      db: connect()
+    } as Context
+  }))
 )
 
 // GraphiQL, a visual editor for queries

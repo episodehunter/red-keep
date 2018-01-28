@@ -1,3 +1,5 @@
+import { Maybe } from 'monet'
+import { Context } from '../types/context.type'
 import { EpisodeDefinition, EpisodeResolver } from './episode'
 
 export const ShowDefinition = `
@@ -29,7 +31,7 @@ export const ShowDefinition = `
     network: String,
     overview: String,
     runtime: Int,
-    status: ShowStatus,
+    ended: Boolean,
     fanart: String,
     poster: String,
     lastupdate: Int,
@@ -37,30 +39,90 @@ export const ShowDefinition = `
   }
 `
 
+type ShowStatus = 'Continuing' | 'Ended'
+
+type ShowDatabase = {
+  id: number
+  tvdb_id: number
+  imdb_id: string
+  name: string
+  airs_dayOfWeek: string
+  airs_time: string
+  first_aired: string
+  genre: string
+  language: string
+  network: string
+  overview: string
+  runtime: string
+  status: ShowStatus
+  fanart: string
+  poster: string
+  lastupdate: number
+}
+
+type ShowDefinition = {
+  id: number
+  tvdbId: number
+  imdbId: string
+  name: string
+  airsDayOfWeek: string
+  airsTime: string
+  firstAired: string
+  genre: string[]
+  language: string
+  network: string
+  overview: string
+  runtime: number
+  ended: boolean
+  fanart: string
+  poster: string
+  lastupdate: number
+}
+
+function safeStringSplit(str: string, key: string) {
+  if (!str || !str.split) {
+    return []
+  }
+  return str.split(key)
+}
+
+function mapDatabaseShowToDefinition(show: ShowDatabase): ShowDefinition {
+  return {
+    id: show.id,
+    tvdbId: show.tvdb_id,
+    imdbId: show.imdb_id,
+    name: show.name,
+    airsDayOfWeek: show.airs_dayOfWeek,
+    airsTime: show.airs_time,
+    firstAired: show.first_aired,
+    genre: safeStringSplit(show.genre, '|'),
+    language: show.language,
+    network: show.network,
+    overview: show.overview,
+    runtime: Number(show.runtime),
+    ended: show.status === 'Ended',
+    fanart: show.fanart,
+    poster: show.poster,
+    lastupdate: show.lastupdate
+  }
+}
+
 export const ShowResolver = {
   RootQuery: {
-    show: (obj: { id: number }, args: any, context: any) => {
-      console.log('show obj', obj)
-      console.log('show args', args)
-      console.log('show context', context)
-      return {
-        id: 2,
-        tvdbId: 76290,
-        imdbId: 'tt0285331',
-        name: '24',
-        airsDayOfWeek: 'Monday',
-        airsTime: '9:00 PM',
-        firstAired: '2012-01-16',
-        genre: ['action'],
-        language: 'en',
-        network: 'AMC',
-        overview: 'Some story',
-        runtime: 60,
-        status: 'Ended',
-        fanart: 'fanart.jpg',
-        poster: 'poster.jpg',
-        lastupdate: 1000000
-      }
+    show: async (
+      obj: any,
+      args: { id: number },
+      context: Context
+    ): Promise<ShowDefinition | null> => {
+      return Maybe.fromNull(
+        await context.db
+          .first('*')
+          .from('tv_show')
+          .where('id', args.id)
+          .then(result => result || null)
+      )
+        .map(mapDatabaseShowToDefinition)
+        .orNull()
     }
   },
   Show: {
