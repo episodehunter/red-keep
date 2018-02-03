@@ -1,22 +1,49 @@
-# simple-spy [![Build Status](https://travis-ci.org/episodehunter/red-keep.svg?branch=master)](https://travis-ci.org/episodehunter/red-keep) [![Coverage Status](https://coveralls.io/repos/github/episodehunter/red-keep/badge.svg?branch=master)](https://coveralls.io/github/episodehunter/red-keep?branch=master)
+# Red keep [![Build Status](https://travis-ci.org/episodehunter/red-keep.svg?branch=master)](https://travis-ci.org/episodehunter/red-keep) [![Coverage Status](https://coveralls.io/repos/github/episodehunter/red-keep/badge.svg?branch=master)](https://coveralls.io/github/episodehunter/red-keep?branch=master)
 
 > GraphQL interface for episodehunters database
 
 
-## Install
+## Requirements
 
+- [Docker](https://docs.docker.com/install/#supported-platforms)
+- [nodejs](https://nodejs.org/en/)
+
+## Getting started
+
+> (you only need to follow these steps once)
+
+### Start a local mysql server
+
+```bash
+docker run --name episodehunter-db \
+  -e MYSQL_ROOT_PASSWORD=rootpass \
+  -e MYSQL_DATABASE=episodehunter \
+  -e MYSQL_USER=user \
+  -e MYSQL_PASSWORD=123 \
+  -p 3306:3306 \
+  -d mysql:latest
 ```
-$ npm install red-keep
+
+### Reset and seed the database
+
+```bash
+node seed-db/seed-db.js
 ```
 
+## Run the application
 
-## Usage
-
-```js
-// As you like
+```bash
+npm run compile
+npm start
 ```
 
-## API
+Visit `http://localhost:4000/graphiql`
+
+## Run the tests
+
+```bash
+npm test
+```
 
 ## License
 
