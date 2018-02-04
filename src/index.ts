@@ -4,7 +4,7 @@ import { json } from 'body-parser'
 import * as express from 'express'
 import { Context } from './types/context.type'
 import { connect } from './database'
-import { ShowDefinitions, ShowResolver } from './show/show'
+import { ShowDefinitions, ShowResolver } from './show'
 
 const SchemaDefinition = `
   schema {

@@ -12,6 +12,12 @@
 
 > (you only need to follow these steps once)
 
+### Install dependencies
+
+```bash
+npm install
+```
+
 ### Start a local mysql server
 
 ```bash
