@@ -40,7 +40,7 @@ node seed-db/seed-db.js
 
 ```bash
 npm run compile
-npm start
+npm run start:dev
 ```
 
 Visit `http://localhost:4000/graphiql`
