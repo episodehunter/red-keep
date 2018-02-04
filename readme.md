@@ -1,4 +1,4 @@
-# Red keep [![Build Status](https://travis-ci.org/episodehunter/red-keep.svg?branch=master)](https://travis-ci.org/episodehunter/red-keep) [![Coverage Status](https://coveralls.io/repos/github/episodehunter/red-keep/badge.svg?branch=master)](https://coveralls.io/github/episodehunter/red-keep?branch=master)
+# Red keep [![Build Status](https://travis-ci.org/episodehunter/red-keep.svg?branch=master)](https://travis-ci.org/episodehunter/red-keep) [![codecov](https://codecov.io/gh/episodehunter/red-keep/branch/master/graph/badge.svg)](https://codecov.io/gh/episodehunter/red-keep)
 
 > GraphQL interface for episodehunters database
 

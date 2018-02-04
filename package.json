@@ -54,6 +54,15 @@
       "ts",
       "js",
       "json"
+    ],
+    "coverageDirectory": "./coverage/",
+    "collectCoverage": true,
+    "coveragePathIgnorePatterns": [
+      "<rootDir>/dist/",
+      "<rootDir>/node_modules/",
+      "<rootDir>/seed-db/",
+      "<rootDir>/node_modules/",
+      "<rootDir>/.*\\.definition\\.ts$"
     ]
   }
 }
