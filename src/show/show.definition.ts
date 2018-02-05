@@ -9,11 +9,6 @@ export const ShowDefinition = `
     Sunday
   }
 
-  enum ShowStatus {
-    Ended
-    Continuing
-  }
-
   type Show {
     id: ID!,
     tvdbId: Int!,
