@@ -1,47 +1,57 @@
 import { Maybe } from 'monet'
 import { Context } from '../types/context.type'
-import { EpisodeResolver } from './episode/episode.resolver'
-import { ShowDatabaseType, ShowDefinitionType } from './show.type'
-import { safeStringSplit } from '../util'
+import { EpisodeResolver, episodesUpdate } from './episode/episode.resolver'
+import { ShowDefinitionType } from './show.type'
+import {
+  mapDefinitionToDatabaseShow,
+  mapDatabaseShowToDefinition,
+  getShowId
+} from './show.resolve.util'
 
-function mapDatabaseShowToDefinition(show: ShowDatabaseType): ShowDefinitionType {
-  return {
-    id: show.id,
-    tvdbId: show.tvdb_id,
-    imdbId: show.imdb_id,
-    name: show.name,
-    airsDayOfWeek: show.airs_dayOfWeek,
-    airsTime: show.airs_time,
-    firstAired: show.first_aired,
-    genre: safeStringSplit(show.genre, '|'),
-    language: show.language,
-    network: show.network,
-    overview: show.overview,
-    runtime: Number(show.runtime),
-    ended: show.status === 'Ended',
-    fanart: show.fanart,
-    poster: show.poster,
-    lastupdate: show.lastupdate
-  }
+async function resolveShow(
+  obj: void,
+  args: { id?: number; tvdb_id?: number; imdb_id?: string },
+  context: Context
+): Promise<ShowDefinitionType | null> {
+  return Maybe.fromNull(
+    await context.db
+      .first('*')
+      .from('tv_show')
+      .where(getShowId(args))
+  )
+    .map(mapDatabaseShowToDefinition)
+    .orNull()
+}
+
+export async function mutateShow(
+  obj: void,
+  { show }: { show: Partial<ShowDefinitionType> },
+  context: Context,
+  _resolveShow = resolveShow,
+  _episodesUpdate = episodesUpdate
+): Promise<ShowDefinitionType | null> {
+  return Promise.resolve(mapDefinitionToDatabaseShow(show))
+    .then(dbShow =>
+      Promise.all([
+        context
+          .db('tv_show')
+          .update(dbShow)
+          .where(getShowId(dbShow)),
+        _episodesUpdate(show.episodes, context)
+      ])
+    )
+    .then(() => _resolveShow(undefined, show, context))
 }
 
 export const ShowResolver = {
   RootQuery: {
-    show: async (
-      obj: void,
-      args: { id: number },
-      context: Context
-    ): Promise<ShowDefinitionType | null> => {
-      return Maybe.fromNull(
-        await context.db
-          .first('*')
-          .from('tv_show')
-          .where('id', args.id)
-      )
-        .map(mapDatabaseShowToDefinition)
-        .orNull()
-    }
+    show: resolveShow
   },
+
+  RootMutation: {
+    showUpdate: mutateShow
+  },
+
   Show: {
     episodes: EpisodeResolver.episodes
   }

@@ -5,7 +5,7 @@
     "lib": ["es2017", "esnext.asynciterable"],
     "noEmit": false,
     "moduleResolution": "node",
-    "strict": true,
+    "strict": false,
     "noImplicitThis": true,
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,

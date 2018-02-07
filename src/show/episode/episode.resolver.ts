@@ -21,6 +21,50 @@ function mapDatabaseEpisodeToDefinition(
   }
 }
 
+function mapDefinitionEpisodeToDatabase(
+  episode: Partial<EpisodeDefinitionType>
+): Partial<EpisodeDataBaseType> {
+  return {
+    id: episode.id,
+    tvdb_id: episode.tvdbId,
+    serie_tvdb_id: episode.serieTvdbId,
+    serie_id: episode.serieId,
+    name: episode.name,
+    season: episode.season,
+    episode: episode.episode,
+    first_aired: episode.firstAired,
+    overview: episode.overview,
+    image: episode.image,
+    lastupdated: episode.lastupdated
+  }
+}
+
+function getEpisodeId(episode: Partial<EpisodeDataBaseType>) {
+  const { id, tvdb_id } = episode
+  if (id) {
+    return { id }
+  } else if (tvdb_id) {
+    return { tvdb_id }
+  }
+  throw new Error('Missing id for updating episode')
+}
+
+export function episodesUpdate(
+  episodes: Partial<EpisodeDefinitionType>[] | undefined,
+  { db }: Context
+) {
+  if (!Array.isArray(episodes)) {
+    return Promise.resolve([])
+  }
+  return Promise.all(
+    episodes.map(mapDefinitionEpisodeToDatabase).map(episode =>
+      db('tv_episode')
+        .update(episode)
+        .where(getEpisodeId(episode))
+    )
+  )
+}
+
 export const EpisodeResolver = {
   episodes: (show: ShowDefinitionType, args: {}, context: Context) => {
     return context.db

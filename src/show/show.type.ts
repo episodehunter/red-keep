@@ -1,4 +1,5 @@
-type ShowStatusType = 'Continuing' | 'Ended'
+import { EpisodeDefinitionType } from './episode/episode.type'
+export type ShowStatusType = 'Continuing' | 'Ended'
 
 export type ShowDatabaseType = {
   id: number
@@ -12,7 +13,7 @@ export type ShowDatabaseType = {
   language: string
   network: string
   overview: string
-  runtime: string
+  runtime: number
   status: ShowStatusType
   fanart: string
   poster: string
@@ -35,5 +36,6 @@ export type ShowDefinitionType = {
   ended: boolean
   fanart: string
   poster: string
+  episodes?: EpisodeDefinitionType[]
   lastupdate: number
 }

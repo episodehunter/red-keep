@@ -28,4 +28,23 @@ export const ShowDefinition = `
     lastupdate: Int,
     episodes: [Episode]
   }
+
+  input ShowInput {
+    id: ID,
+    tvdbId: Int,
+    imdbId: String,
+    name: String,
+    airsDayOfWeek: WeekDay,
+    airsTime: String,
+    firstAired: String,
+    genre: [String],
+    language: String,
+    network: String,
+    overview: String,
+    runtime: Int,
+    ended: Boolean,
+    fanart: String,
+    poster: String,
+    episodes: [EpisodeInput]
+  }
 `

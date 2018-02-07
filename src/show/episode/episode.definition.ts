@@ -12,4 +12,17 @@ export const EpisodeDefinition = `
     image: String,
     lastupdated: Int!
   }
+
+  input EpisodeInput {
+    id: ID,
+    tvdbId: Int,
+    serieTvdbId: Int,
+    serieId: Int,
+    name: String,
+    season: Int,
+    episode: Int,
+    firstAired: String,
+    overview: String,
+    image: String
+  }
 `

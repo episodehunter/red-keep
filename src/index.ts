@@ -10,20 +10,27 @@ import { ShowDefinitions, ShowResolver } from './show'
 
 const SchemaDefinition = `
   schema {
-    query: RootQuery
+    query: RootQuery,
+    mutation: RootMutation
   }
 `
 
 const RootQuery = `
   type RootQuery {
-    show(id: ID!): Show
+    show(id: ID, tvdbId: Int, imdbId: String): Show
+  }
+`
+
+const RootMutation = `
+  type RootMutation {
+    showUpdate(show: ShowInput!): Show
   }
 `
 
 const rootResolvers = ShowResolver
 
 const schema = makeExecutableSchema({
-  typeDefs: [SchemaDefinition, RootQuery, ...ShowDefinitions],
+  typeDefs: [SchemaDefinition, RootQuery, RootMutation, ...ShowDefinitions],
   resolvers: rootResolvers as any,
   allowUndefinedInResolve: false
 })

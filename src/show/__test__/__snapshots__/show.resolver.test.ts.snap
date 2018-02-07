@@ -1,10 +1,16 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Resolve a show 1`] = `
+exports[`Mutate a show 1`] = `
 Object {
   "airsDayOfWeek": "Monday",
   "airsTime": "09:00 PM",
   "ended": false,
+  "episodes": Array [
+    Object {
+      "id": 1,
+      "name": "new episode name",
+    },
+  ],
   "fanart": "fanart.jpg",
   "firstAired": "2016-03-15",
   "genre": Array [
@@ -20,6 +26,80 @@ Object {
   "overview": "Something, somthing",
   "poster": "poster.jpg",
   "runtime": 60,
+  "tvdbId": 2,
+}
+`;
+
+exports[`Mutate a show 2`] = `
+Array [
+  Object {
+    "args": Array [
+      "tv_show",
+    ],
+    "type": "apply",
+  },
+  Object {
+    "name": "update",
+    "type": "get",
+  },
+  Object {
+    "args": Array [
+      Object {
+        "airs_dayOfWeek": "Monday",
+        "airs_time": "09:00 PM",
+        "fanart": "fanart.jpg",
+        "first_aired": "2016-03-15",
+        "genre": "Drama|Action",
+        "id": 5,
+        "imdb_id": "tt12345",
+        "language": "en",
+        "lastupdate": 1234567891,
+        "name": "Dexter",
+        "network": "AMC",
+        "overview": "Something, somthing",
+        "poster": "poster.jpg",
+        "runtime": 60,
+        "status": "Continuing",
+        "tvdb_id": 2,
+      },
+    ],
+    "type": "apply",
+  },
+  Object {
+    "name": "where",
+    "type": "get",
+  },
+  Object {
+    "args": Array [
+      Object {
+        "id": 5,
+      },
+    ],
+    "type": "apply",
+  },
+]
+`;
+
+exports[`Resolve a show 1`] = `
+Object {
+  "airsDayOfWeek": "Monday",
+  "airsTime": "09:00 PM",
+  "ended": true,
+  "fanart": "fanart.jpg",
+  "firstAired": "2016-03-15",
+  "genre": Array [
+    "Drama",
+    "Action",
+  ],
+  "id": 5,
+  "imdbId": "tt12345",
+  "language": "en",
+  "lastupdate": 1234567891,
+  "name": "Dexter",
+  "network": "AMC",
+  "overview": "Something, somthing",
+  "poster": "poster.jpg",
+  "runtime": "60",
   "tvdbId": 2,
 }
 `;
@@ -52,8 +132,9 @@ Array [
   },
   Object {
     "args": Array [
-      "id",
-      5,
+      Object {
+        "id": 5,
+      },
     ],
     "type": "apply",
   },

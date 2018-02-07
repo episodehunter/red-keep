@@ -1,4 +1,4 @@
-export function safeStringSplit(str: string | null | undefined, key: string) {
+export function safeStringSplit(str: string | null | undefined, key: string): string[] {
   if (!str || !str.split) {
     return []
   }
