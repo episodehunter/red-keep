@@ -26,14 +26,14 @@ export const ShowDefinition = `
     fanart: String,
     poster: String,
     lastupdate: Int,
-    episodes: [Episode]
+    episodes(onlyMissingImages: Boolean): [Episode]
   }
 
   input ShowInput {
     id: ID,
     tvdbId: Int,
     imdbId: String,
-    name: String,
+    name: String!,
     airsDayOfWeek: WeekDay,
     airsTime: String,
     firstAired: String,
@@ -42,9 +42,10 @@ export const ShowDefinition = `
     network: String,
     overview: String,
     runtime: Int,
-    ended: Boolean,
+    ended: Boolean!,
     fanart: String,
     poster: String,
+    lastupdate: Int!,
     episodes: [EpisodeInput]
   }
 `

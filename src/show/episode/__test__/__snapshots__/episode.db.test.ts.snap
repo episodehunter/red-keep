@@ -1,0 +1,195 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Add new episodes Insert episode in db 1`] = `
+Array [
+  Object {
+    "args": Array [
+      "tv_episode",
+    ],
+    "type": "apply",
+  },
+  Object {
+    "name": "insert",
+    "type": "get",
+  },
+  Object {
+    "args": Array [
+      Array [
+        Object {
+          "episode": 2,
+          "first_aired": "2017-09-27",
+          "id": undefined,
+          "image": undefined,
+          "lastupdated": 1234567890,
+          "name": "episode name",
+          "overview": "This is some text",
+          "season": 1,
+          "serie_id": 5,
+          "tvdb_id": 1234567,
+        },
+      ],
+    ],
+    "type": "apply",
+  },
+]
+`;
+
+exports[`Find all episodes 1`] = `
+Array [
+  Object {
+    "name": "select",
+    "type": "get",
+  },
+  Object {
+    "args": Array [
+      "*",
+    ],
+    "type": "apply",
+  },
+  Object {
+    "name": "from",
+    "type": "get",
+  },
+  Object {
+    "args": Array [
+      "tv_episode",
+    ],
+    "type": "apply",
+  },
+  Object {
+    "name": "where",
+    "type": "get",
+  },
+  Object {
+    "args": Array [
+      "serie_id",
+      5,
+    ],
+    "type": "apply",
+  },
+]
+`;
+
+exports[`Remove episodes Remove episode in db 1`] = `
+Array [
+  Object {
+    "args": Array [
+      "tv_episode",
+    ],
+    "type": "apply",
+  },
+  Object {
+    "name": "whereIn",
+    "type": "get",
+  },
+  Object {
+    "args": Array [
+      "id",
+      Array [
+        2,
+        5,
+      ],
+    ],
+    "type": "apply",
+  },
+  Object {
+    "name": "delete",
+    "type": "get",
+  },
+  Object {
+    "args": Array [],
+    "type": "apply",
+  },
+]
+`;
+
+exports[`Update episodes in db 1`] = `
+Array [
+  Object {
+    "args": Array [
+      "tv_episode",
+    ],
+    "type": "apply",
+  },
+  Object {
+    "name": "update",
+    "type": "get",
+  },
+  Object {
+    "args": Array [
+      Object {
+        "episode": 2,
+        "first_aired": "2017-09-27",
+        "id": undefined,
+        "image": undefined,
+        "lastupdated": 1234567890,
+        "name": "episode name",
+        "overview": "This is some text",
+        "season": 1,
+        "serie_id": 5,
+        "tvdb_id": 1234567,
+      },
+    ],
+    "type": "apply",
+  },
+  Object {
+    "name": "where",
+    "type": "get",
+  },
+  Object {
+    "args": Array [
+      Object {
+        "tvdb_id": 1234567,
+      },
+    ],
+    "type": "apply",
+  },
+  Object {
+    "args": Array [
+      "tv_episode",
+    ],
+    "type": "apply",
+  },
+  Object {
+    "name": "update",
+    "type": "get",
+  },
+  Object {
+    "args": Array [
+      Object {
+        "episode": 3,
+        "first_aired": "2017-11-27",
+        "id": undefined,
+        "image": undefined,
+        "lastupdated": 1234567900,
+        "name": "episode name 2",
+        "overview": "This is some text 2",
+        "season": 2,
+        "serie_id": 5,
+        "tvdb_id": 1234599,
+      },
+    ],
+    "type": "apply",
+  },
+  Object {
+    "name": "where",
+    "type": "get",
+  },
+  Object {
+    "args": Array [
+      Object {
+        "tvdb_id": 1234599,
+      },
+    ],
+    "type": "apply",
+  },
+  Object {
+    "name": "then",
+    "type": "get",
+  },
+  Object {
+    "name": "then",
+    "type": "get",
+  },
+]
+`;

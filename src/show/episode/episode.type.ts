@@ -1,7 +1,6 @@
-export type EpisodeDataBaseType = {
+export type EpisodeDatabaseType = {
   id: number
   tvdb_id: number
-  serie_tvdb_id: number
   serie_id: number
   name: string
   season: number
@@ -15,7 +14,6 @@ export type EpisodeDataBaseType = {
 export type EpisodeDefinitionType = {
   id: number
   tvdbId: number
-  serieTvdbId: number
   serieId: number
   name: string
   season: number

@@ -23,7 +23,7 @@ const RootQuery = `
 
 const RootMutation = `
   type RootMutation {
-    showUpdate(show: ShowInput!): Show
+    showUpdate(show: ShowInput!, removeMissingEpisodes: Boolean = true): Show
   }
 `
 
@@ -54,6 +54,26 @@ const noop = (req: any, res: any, next: any) => next()
 const inDevelopMode = process.env.NODE_ENV === 'develop'
 const checkJwt = inDevelopMode ? noop : createJwtCheck()
 
+function formatError(error: any) {
+  const errorId = Math.random()
+  const errorObj = {
+    errorId,
+    message: error.message,
+    locations: error.locations,
+    stack: error.stack,
+    path: error.path
+  }
+  console.error(errorObj)
+
+  if (inDevelopMode) {
+    return errorObj
+  }
+  return {
+    message: 'This was bad',
+    errorId
+  }
+}
+
 const app = express()
 
 app.use(
@@ -64,7 +84,8 @@ app.use(
     schema,
     context: {
       db: connect()
-    } as Context
+    } as Context,
+    formatError
   }))
 )
 

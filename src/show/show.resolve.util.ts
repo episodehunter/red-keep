@@ -13,15 +13,21 @@ export function convertGenreArrayToString(genre: string[]) {
 }
 
 export function getShowId(
-  ids: Partial<{ id: number; tvdb_id: number; imdb_id: string }>
+  ids: Partial<{
+    id: number
+    tvdb_id: number
+    imdb_id: string
+    tvdbId: number
+    imdbId: string
+  }>
 ) {
-  const { id, tvdb_id, imdb_id } = ids
+  const { id, tvdb_id, imdb_id, imdbId, tvdbId } = ids
   if (id) {
     return { id }
-  } else if (tvdb_id) {
-    return { tvdb_id }
-  } else if (imdb_id) {
-    return { imdb_id }
+  } else if (tvdb_id || tvdbId) {
+    return { tvdb_id: tvdb_id || tvdbId }
+  } else if (imdb_id || imdbId) {
+    return { imdb_id: imdb_id || imdbId }
   }
   throw new Error('Missing id for updating show')
 }
@@ -67,5 +73,14 @@ export function mapDefinitionToDatabaseShow(
     fanart: show.fanart,
     poster: show.poster,
     lastupdate: show.lastupdate
+  }
+}
+
+export function assertValue(msg: string) {
+  return (value?: any) => {
+    if (value) {
+      return value
+    }
+    throw new Error(msg)
   }
 }
