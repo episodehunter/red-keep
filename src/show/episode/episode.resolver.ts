@@ -25,11 +25,18 @@ export function episodesUpdate(
       db.transaction(trx =>
         // Delete epsiodes before we add and update due to dublet problems
         Promise.resolve(
-          removeMissingEpisodes && removeEpisodesInDb(trx, episodesToRemove)
+          removeMissingEpisodes &&
+            removeEpisodesInDb(trx, episodesToRemove).then(
+              n => console.log(`Removed ${n} episodes`) || n
+            )
         ).then(() =>
           Promise.all([
-            addNewEpisodesInDb(trx, showId, episodesToAdd),
-            updateEpisodesInDb(trx, showId, episodesToUpdate)
+            addNewEpisodesInDb(trx, showId, episodesToAdd).then(
+              n => console.log(`Added ${n} episodes`) || n
+            ),
+            updateEpisodesInDb(trx, showId, episodesToUpdate).then(
+              n => console.log(`Updated ${n} episodes`) || n
+            )
           ])
         )
       )
