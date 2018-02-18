@@ -12,9 +12,10 @@ CREATE TABLE `tv_episode` (
   `lastupdated` int(10) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `serie_id_2` (`serie_id`,`season`,`episode`),
+  UNIQUE KEY `tvdb_id` (`tvdb_id`),
   KEY `id` (`id`),
   KEY `serie_id` (`serie_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 INSERT INTO `tv_episode` (`id`, `tvdb_id`, `serie_id`, `name`, `season`, `episode`, `first_aired`, `overview`, `image`, `lastupdated`)
 VALUES
