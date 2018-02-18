@@ -76,6 +76,10 @@ function formatError(error: any) {
 
 const app = express()
 
+app.get('/', (req, res) => {
+  res.send('Red keep')
+})
+
 app.use(
   '/graphql',
   json(),
