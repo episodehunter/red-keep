@@ -5,7 +5,8 @@ import {
   getShowId,
   assertValue,
   mapDefinitionToDatabaseShow,
-  mapDatabaseShowToDefinition
+  mapDatabaseShowToDefinition,
+  mapDatabaseShowIdsToDefinition
 } from './show.resolve.util'
 
 const showTableName = 'tv_show'
@@ -39,7 +40,7 @@ export function updateShow(
 
 export async function findShow(
   db: Db,
-  showIds: { id?: number; tvdb_id?: number; imdb_id?: string }
+  showIds: { id?: number; tvdbId?: number; imdbId?: string }
 ): Promise<ShowDefinitionType | null> {
   return Maybe.fromNull(
     await db
@@ -49,4 +50,15 @@ export async function findShow(
   )
     .map(mapDatabaseShowToDefinition)
     .orNull()
+}
+
+export function filterOutNonExistingShows(db: Db, tvdbIds: number[]) {
+  return Promise.resolve(tvdbIds.map(id => id | 0).filter(id => id > 0))
+    .then(ids =>
+      db
+        .select('id', 'tvdb_id', 'imdb_id')
+        .from(showTableName)
+        .whereIn('tvdb_id', ids)
+    )
+    .then(ids => ids.map(mapDatabaseShowIdsToDefinition))
 }

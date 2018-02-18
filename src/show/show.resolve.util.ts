@@ -32,6 +32,18 @@ export function getShowId(
   throw new Error('Missing id for updating show')
 }
 
+export function mapDatabaseShowIdsToDefinition(ids: {
+  id: number
+  tvdb_id: number
+  imdb_id?: string
+}): { id: number; tvdbId: number; imdbId?: string } {
+  return {
+    id: ids.id,
+    tvdbId: ids.tvdb_id,
+    imdbId: ids.imdb_id
+  }
+}
+
 export function mapDatabaseShowToDefinition(show: ShowDatabaseType): ShowDefinitionType {
   return {
     id: show.id,

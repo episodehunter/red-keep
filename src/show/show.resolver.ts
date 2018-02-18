@@ -1,7 +1,12 @@
 import { Context } from '../types/context.type'
 import { EpisodeResolver, episodesUpdate } from './episode/episode.resolver'
 import { ShowDefinitionType } from './show.type'
-import { getShowIdFromDb, updateShow, findShow } from './show.db.util'
+import {
+  getShowIdFromDb,
+  updateShow,
+  findShow,
+  filterOutNonExistingShows
+} from './show.db.util'
 
 export async function mutateShow(
   {
@@ -20,10 +25,14 @@ export const ShowResolver = {
   RootQuery: {
     show(
       obj: void,
-      args: { id?: number; tvdb_id?: number; imdb_id?: string },
+      args: { id?: number; tvdbId?: number; imdbId?: string },
       context: Context
     ) {
       return findShow(context.db, args)
+    },
+
+    existingShows(obj: void, args: { tvdbIds: number[] }, context: Context) {
+      return filterOutNonExistingShows(context.db, args.tvdbIds)
     }
   },
 

@@ -1,5 +1,46 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`Filter out non existing shows 1`] = `
+Array [
+  Object {
+    "name": "select",
+    "type": "get",
+  },
+  Object {
+    "args": Array [
+      "id",
+      "tvdb_id",
+      "imdb_id",
+    ],
+    "type": "apply",
+  },
+  Object {
+    "name": "from",
+    "type": "get",
+  },
+  Object {
+    "args": Array [
+      "tv_show",
+    ],
+    "type": "apply",
+  },
+  Object {
+    "name": "whereIn",
+    "type": "get",
+  },
+  Object {
+    "args": Array [
+      "tvdb_id",
+      Array [
+        2,
+        5,
+      ],
+    ],
+    "type": "apply",
+  },
+]
+`;
+
 exports[`Find show Resolve a show 1`] = `
 Object {
   "airsDayOfWeek": "Monday",

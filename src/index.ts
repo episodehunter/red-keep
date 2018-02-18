@@ -18,6 +18,7 @@ const SchemaDefinition = `
 const RootQuery = `
   type RootQuery {
     show(id: ID, tvdbId: Int, imdbId: String): Show
+    existingShows(tvdbIds: [Int]!): [ShowIds]
   }
 `
 

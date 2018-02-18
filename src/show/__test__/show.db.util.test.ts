@@ -1,5 +1,10 @@
 import { create } from 'chain-spy'
-import { getShowIdFromDb, updateShow, findShow } from '../show.db.util'
+import {
+  getShowIdFromDb,
+  updateShow,
+  findShow,
+  filterOutNonExistingShows
+} from '../show.db.util'
 
 describe('Get show id', () => {
   test('Return show id', async () => {
@@ -116,4 +121,17 @@ describe('Find show', () => {
     // Assert
     expect(result).toBe(null)
   })
+})
+
+test('Filter out non existing shows', async () => {
+  // Arrange
+  const db = create({ whereIn: () => [{ id: 2, tvdb_id: 5, imdb_id: 'Hello' }] })
+  const ids = [0, 2, 5]
+
+  // Act
+  const result = await filterOutNonExistingShows(db, ids)
+
+  // Assert
+  expect(result).toEqual([{ id: 2, tvdbId: 5, imdbId: 'Hello' }])
+  expect(db.__execution_log__).toMatchSnapshot()
 })

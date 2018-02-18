@@ -9,8 +9,14 @@ export const ShowDefinition = `
     Sunday
   }
 
+  type ShowIds {
+    id: Int!,
+    tvdbId: Int!,
+    imdbId: String
+  }
+
   type Show {
-    id: ID!,
+    id: Int!,
     tvdbId: Int!,
     imdbId: String,
     name: String!,
@@ -30,7 +36,7 @@ export const ShowDefinition = `
   }
 
   input ShowInput {
-    id: ID,
+    id: Int,
     tvdbId: Int,
     imdbId: String,
     name: String!,

@@ -1,6 +1,6 @@
 export const EpisodeDefinition = `
   type Episode {
-    id: ID!,
+    id: Int!,
     tvdbId: Int!,
     serieId: Int!,
     name: String!,
@@ -13,7 +13,7 @@ export const EpisodeDefinition = `
   }
 
   input EpisodeInput {
-    id: ID,
+    id: Int,
     tvdbId: Int!,
     serieId: Int,
     name: String!,
