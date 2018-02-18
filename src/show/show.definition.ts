@@ -1,14 +1,4 @@
 export const ShowDefinition = `
-  enum WeekDay {
-    Monday
-    Tuesday
-    Wednesday
-    Thursday
-    Friday
-    Saturday
-    Sunday
-  }
-
   type ShowIds {
     id: Int!,
     tvdbId: Int!,
@@ -20,7 +10,7 @@ export const ShowDefinition = `
     tvdbId: Int!,
     imdbId: String,
     name: String!,
-    airsDayOfWeek: WeekDay,
+    airsDayOfWeek: String,
     airsTime: String,
     firstAired: String,
     genre: [String],
@@ -40,7 +30,7 @@ export const ShowDefinition = `
     tvdbId: Int,
     imdbId: String,
     name: String!,
-    airsDayOfWeek: WeekDay,
+    airsDayOfWeek: String,
     airsTime: String,
     firstAired: String,
     genre: [String],
