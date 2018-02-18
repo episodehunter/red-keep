@@ -27,15 +27,24 @@ export function episodesUpdate(
         Promise.resolve(
           removeMissingEpisodes &&
             removeEpisodesInDb(trx, episodesToRemove).then(
-              n => console.log(`Removed ${episodesToRemove.length} episodes`) || n
+              n =>
+                console.log(
+                  `Removed ${episodesToRemove.length} episodes for show ${showId}`
+                ) || n
             )
         ).then(() =>
           Promise.all([
             addNewEpisodesInDb(trx, showId, episodesToAdd).then(
-              n => console.log(`Added ${episodesToAdd.length} episodes`) || n
+              n =>
+                console.log(
+                  `Added ${episodesToAdd.length} episodes for show ${showId}`
+                ) || n
             ),
             updateEpisodesInDb(trx, showId, episodesToUpdate).then(
-              n => console.log(`Updated ${episodesToUpdate.length} episodes`) || n
+              n =>
+                console.log(
+                  `Updated ${episodesToUpdate.length} episodes for show ${showId}`
+                ) || n
             )
           ])
         )
