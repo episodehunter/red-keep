@@ -11,5 +11,9 @@ export const config = {
       port: process.env.EH_DB_PORT || 3306
     },
     debug: false
-  } as Config
+  } as Config,
+  raven: {
+    dsn: process.env.EH_RAVEN_DSN || '',
+    project: process.env.EH_RAVEN_PROJECT || ''
+  }
 }

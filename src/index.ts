@@ -4,8 +4,10 @@ import { json } from 'body-parser'
 import * as jwt from 'express-jwt'
 import * as jwksRsa from 'jwks-rsa'
 import * as express from 'express'
+import * as Raven from 'raven'
 import { Context } from './types/context.type'
 import { connect } from './database'
+import { config } from './config'
 import { ShowDefinitions, ShowResolver } from './show'
 
 const SchemaDefinition = `
@@ -69,13 +71,22 @@ function formatError(error: any) {
   if (inDevelopMode) {
     return errorObj
   }
+  Raven.captureException(errorObj)
   return {
     message: 'This was bad',
     errorId
   }
 }
 
+if (inDevelopMode) {
+  Raven.config(`https://${config.raven.dsn}@sentry.io/${config.raven.project}`, {
+    autoBreadcrumbs: false
+  }).install()
+}
+
 const app = express()
+
+app.use(Raven.requestHandler())
 
 app.get('/', (req, res) => {
   res.send('Red keep')
@@ -98,6 +109,8 @@ if (inDevelopMode) {
   // GraphiQL, a visual editor for queries
   app.use('/graphiql', graphiqlExpress({ endpointURL: '/graphql' }))
 }
+
+app.use(Raven.errorHandler())
 
 app.use((err: any, req: any, res: any, next: any) => {
   if (err.status !== 401) {
