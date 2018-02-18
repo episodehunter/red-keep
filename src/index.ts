@@ -78,15 +78,14 @@ function formatError(error: any) {
   }
 }
 
-if (inDevelopMode) {
+const app = express()
+
+if (!inDevelopMode) {
   Raven.config(`https://${config.raven.dsn}@sentry.io/${config.raven.project}`, {
     autoBreadcrumbs: false
   }).install()
+  app.use(Raven.requestHandler())
 }
-
-const app = express()
-
-app.use(Raven.requestHandler())
 
 app.get('/', (req, res) => {
   res.send('Red keep')
