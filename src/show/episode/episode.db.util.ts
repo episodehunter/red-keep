@@ -1,4 +1,4 @@
-import { Db } from '../../types/context.type'
+import { Db, DbTransaction } from '../../types/context.type'
 import { EpisodeDefinitionType, EpisodeDatabaseType } from './episode.type'
 import { mapDefinitionEpisodeToDatabase, getEpisodeId } from './episode.resolve.util'
 
@@ -12,20 +12,23 @@ export function findAllepisodesInDb(db: Db, showId: number) {
 }
 
 export function addNewEpisodesInDb(
-  db: Db,
+  db: DbTransaction,
   showId: number,
   episodes: EpisodeDefinitionType[]
 ): Promise<any> {
   if (episodes.length === 0) {
     return Promise.resolve()
   }
-  return db(episodeTableName).insert(
-    episodes.map(e => mapDefinitionEpisodeToDatabase(e, showId))
-  ) as any
+  return db
+    .batchInsert(
+      episodeTableName,
+      episodes.map(e => mapDefinitionEpisodeToDatabase(e, showId))
+    )
+    .transacting(db) as any
 }
 
 export function removeEpisodesInDb(
-  db: Db,
+  db: DbTransaction,
   episodes: EpisodeDatabaseType[]
 ): Promise<any> {
   if (episodes.length === 0) {
@@ -37,7 +40,7 @@ export function removeEpisodesInDb(
 }
 
 export function updateEpisodesInDb(
-  db: Db,
+  db: DbTransaction,
   showId: number,
   episodes: EpisodeDefinitionType[]
 ): Promise<any> {

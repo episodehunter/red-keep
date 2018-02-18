@@ -3,23 +3,16 @@
 exports[`Add new episodes Insert episode in db 1`] = `
 Array [
   Object {
-    "args": Array [
-      "tv_episode",
-    ],
-    "type": "apply",
-  },
-  Object {
-    "name": "insert",
+    "name": "batchInsert",
     "type": "get",
   },
   Object {
     "args": Array [
+      "tv_episode",
       Array [
         Object {
           "episode": 2,
           "first_aired": "2017-09-27",
-          "id": undefined,
-          "image": undefined,
           "lastupdated": 1234567890,
           "name": "episode name",
           "overview": "This is some text",
@@ -28,6 +21,16 @@ Array [
           "tvdb_id": 1234567,
         },
       ],
+    ],
+    "type": "apply",
+  },
+  Object {
+    "name": "transacting",
+    "type": "get",
+  },
+  Object {
+    "args": Array [
+      null,
     ],
     "type": "apply",
   },

@@ -52,7 +52,7 @@ describe('Add new episodes', () => {
     addNewEpisodesInDb(db, showId, episodes as any)
 
     // Assert
-    expect(db.__execution_log__).toMatchSnapshot()
+    expect(JSON.parse(JSON.stringify(db.__execution_log__))).toMatchSnapshot()
   })
 })
 

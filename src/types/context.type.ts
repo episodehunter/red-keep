@@ -5,3 +5,4 @@ export type Context = {
 }
 
 export type Db = Knex
+export type DbTransaction = Knex.Transaction

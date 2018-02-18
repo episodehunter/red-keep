@@ -22,11 +22,17 @@ export function episodesUpdate(
   return findAllepisodesInDb(db, showId)
     .then(dbEpisodes => splitEpisodeList(dbEpisodes, episodes))
     .then(({ episodesToAdd, episodesToRemove, episodesToUpdate }) =>
-      Promise.all([
-        addNewEpisodesInDb(db, showId, episodesToAdd),
-        removeMissingEpisodes && removeEpisodesInDb(db, episodesToRemove),
-        updateEpisodesInDb(db, showId, episodesToUpdate)
-      ])
+      db.transaction(trx =>
+        // Delete epsiodes before we add and update due to dublet problems
+        Promise.resolve(
+          removeMissingEpisodes && removeEpisodesInDb(trx, episodesToRemove)
+        ).then(() =>
+          Promise.all([
+            addNewEpisodesInDb(trx, showId, episodesToAdd),
+            updateEpisodesInDb(trx, showId, episodesToUpdate)
+          ])
+        )
+      )
     )
 }
 
