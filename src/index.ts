@@ -5,7 +5,7 @@ import * as jwt from 'express-jwt'
 import * as jwksRsa from 'jwks-rsa'
 import * as express from 'express'
 import * as Raven from 'raven'
-import './engine'
+import { engineSetup } from './engine'
 import { Context } from './types/context.type'
 import { connect } from './database'
 import { config } from './config'
@@ -79,6 +79,8 @@ function formatError(error: any) {
 }
 
 const app = express()
+
+engineSetup(app)
 
 if (!config.inDevelopMode) {
   Raven.config(`https://${config.raven.dsn}@sentry.io/${config.raven.project}`, {
