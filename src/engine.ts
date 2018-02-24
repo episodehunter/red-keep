@@ -5,7 +5,8 @@ if (!config.inDevelopMode) {
   const engine = new Engine({
     engineConfig: {
       apiKey: process.env.APOLLO_ENGINE_API_KEY
-    }
+    },
+    graphqlPort: config.port
   })
   engine.start()
 }

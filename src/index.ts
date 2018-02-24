@@ -120,8 +120,7 @@ app.use((err: any, req: any, res: any, next: any) => {
   res.status(err.status || 500).send()
 })
 
-const port = 4000
 const hostname = 'localhost'
-app.listen(port, hostname, () => {
-  console.log(`Running a GraphQL API server at ${hostname}:${port}/graphql`)
+app.listen(config.port, hostname, () => {
+  console.log(`Running a GraphQL API server at ${hostname}:${config.port}/graphql`)
 })

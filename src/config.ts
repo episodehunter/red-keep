@@ -16,5 +16,6 @@ export const config = {
     dsn: process.env.EH_RAVEN_DSN || '',
     project: process.env.EH_RAVEN_PROJECT || ''
   },
-  inDevelopMode: process.env.NODE_ENV === 'develop'
+  inDevelopMode: process.env.NODE_ENV === 'develop',
+  port: 4000
 }
