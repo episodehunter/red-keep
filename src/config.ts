@@ -15,5 +15,6 @@ export const config = {
   raven: {
     dsn: process.env.EH_RAVEN_DSN || '',
     project: process.env.EH_RAVEN_PROJECT || ''
-  }
+  },
+  inDevelopMode: process.env.NODE_ENV === 'develop'
 }

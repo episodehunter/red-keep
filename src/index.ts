@@ -5,6 +5,7 @@ import * as jwt from 'express-jwt'
 import * as jwksRsa from 'jwks-rsa'
 import * as express from 'express'
 import * as Raven from 'raven'
+import './engine'
 import { Context } from './types/context.type'
 import { connect } from './database'
 import { config } from './config'
@@ -54,8 +55,7 @@ const createJwtCheck = () =>
   })
 
 const noop = (req: any, res: any, next: any) => next()
-const inDevelopMode = process.env.NODE_ENV === 'develop'
-const checkJwt = inDevelopMode ? noop : createJwtCheck()
+const checkJwt = config.inDevelopMode ? noop : createJwtCheck()
 
 function formatError(error: any) {
   const errorId = Math.random()
@@ -68,7 +68,7 @@ function formatError(error: any) {
   }
   console.error(errorObj)
 
-  if (inDevelopMode) {
+  if (config.inDevelopMode) {
     return errorObj
   }
   Raven.captureException(errorObj)
@@ -80,7 +80,7 @@ function formatError(error: any) {
 
 const app = express()
 
-if (!inDevelopMode) {
+if (!config.inDevelopMode) {
   Raven.config(`https://${config.raven.dsn}@sentry.io/${config.raven.project}`, {
     autoBreadcrumbs: false
   }).install()
@@ -100,11 +100,13 @@ app.use(
     context: {
       db: connect()
     } as Context,
-    formatError
+    formatError,
+    tracing: true,
+    cacheControl: false
   }))
 )
 
-if (inDevelopMode) {
+if (config.inDevelopMode) {
   // GraphiQL, a visual editor for queries
   app.use('/graphiql', graphiqlExpress({ endpointURL: '/graphql' }))
 }
