@@ -11,7 +11,6 @@ CREATE TABLE `tv_episode` (
   `image` varchar(50) DEFAULT '',
   `lastupdated` int(10) NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `serie_id_2` (`serie_id`,`season`,`episode`),
   UNIQUE KEY `tvdb_id` (`tvdb_id`),
   KEY `id` (`id`),
   KEY `serie_id` (`serie_id`)
