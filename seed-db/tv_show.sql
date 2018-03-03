@@ -19,7 +19,8 @@ CREATE TABLE `tv_show` (
   `lastupdate` int(10) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   UNIQUE KEY `id` (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+  UNIQUE KEY `tvdb_id` (`tvdb_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 INSERT INTO `tv_show` (`id`, `tvdb_id`, `imdb_id`, `name`, `airs_dayOfWeek`, `airs_time`, `first_aired`, `genre`, `language`, `network`, `overview`, `runtime`, `status`, `fanart`, `poster`, `lastupdate`)
 VALUES
