@@ -1,5 +1,79 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`Assert show exist Make same request every time 1`] = `
+Array [
+  Object {
+    "name": "first",
+    "type": "get",
+  },
+  Object {
+    "args": Array [
+      "id",
+    ],
+    "type": "apply",
+  },
+  Object {
+    "name": "from",
+    "type": "get",
+  },
+  Object {
+    "args": Array [
+      "tv_show",
+    ],
+    "type": "apply",
+  },
+  Object {
+    "name": "where",
+    "type": "get",
+  },
+  Object {
+    "args": Array [
+      Object {
+        "tvdb_id": 5,
+      },
+    ],
+    "type": "apply",
+  },
+]
+`;
+
+exports[`Assert show not exist Make same request every time 1`] = `
+Array [
+  Object {
+    "name": "first",
+    "type": "get",
+  },
+  Object {
+    "args": Array [
+      "id",
+    ],
+    "type": "apply",
+  },
+  Object {
+    "name": "from",
+    "type": "get",
+  },
+  Object {
+    "args": Array [
+      "tv_show",
+    ],
+    "type": "apply",
+  },
+  Object {
+    "name": "where",
+    "type": "get",
+  },
+  Object {
+    "args": Array [
+      Object {
+        "tvdb_id": 5,
+      },
+    ],
+    "type": "apply",
+  },
+]
+`;
+
 exports[`Filter out non existing shows 1`] = `
 Array [
   Object {
@@ -95,43 +169,6 @@ Array [
     "args": Array [
       Object {
         "id": 5,
-      },
-    ],
-    "type": "apply",
-  },
-]
-`;
-
-exports[`Get show id Make same request every time 1`] = `
-Array [
-  Object {
-    "name": "first",
-    "type": "get",
-  },
-  Object {
-    "args": Array [
-      "id",
-    ],
-    "type": "apply",
-  },
-  Object {
-    "name": "from",
-    "type": "get",
-  },
-  Object {
-    "args": Array [
-      "tv_show",
-    ],
-    "type": "apply",
-  },
-  Object {
-    "name": "where",
-    "type": "get",
-  },
-  Object {
-    "args": Array [
-      Object {
-        "tvdb_id": 5,
       },
     ],
     "type": "apply",

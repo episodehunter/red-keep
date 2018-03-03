@@ -1,27 +1,52 @@
 import { Maybe } from 'monet'
+import { BadInput, ShowExistError, ShowNotExistError } from '../custom-error'
 import { Db } from '../types/context.type'
 import { ShowDefinitionType } from './show.type'
 import {
   getShowId,
-  assertValue,
   mapDefinitionToDatabaseShow,
   mapDatabaseShowToDefinition,
   mapDatabaseShowIdsToDefinition
 } from './show.resolve.util'
+import { addNewEpisodesInDb } from './episode/episode.db.util'
 
 const showTableName = 'tv_show'
 
-export function getShowIdFromDb(
-  db: Db,
-  show: Partial<ShowDefinitionType>
-): Promise<number> {
-  const ids = getShowId(show)
+function findShowId(db: Db, show: Partial<ShowDefinitionType>): Promise<number | null> {
   return db
     .first('id')
     .from(showTableName)
-    .where(ids)
-    .then(assertValue('Show do not exist: ' + JSON.stringify(ids)))
-    .then(row => row.id) as any
+    .where(getShowId(show))
+    .then(row => {
+      if (row) {
+        return row.id || null
+      }
+      return null
+    }) as any
+}
+
+export function assertShowExist(
+  db: Db,
+  show: Partial<ShowDefinitionType>
+): Promise<number> {
+  return findShowId(db, show).then(id => {
+    if (!id) {
+      throw new ShowNotExistError('Show do not exist')
+    }
+    return id
+  })
+}
+
+export function assertShowNotExist(
+  db: Db,
+  show: Partial<ShowDefinitionType>
+): Promise<null> {
+  return findShowId(db, show).then(id => {
+    if (id) {
+      throw new ShowExistError('Show already exist')
+    }
+    return null
+  })
 }
 
 export function updateShow(
@@ -36,6 +61,30 @@ export function updateShow(
         .where('id', id)
     )
     .then(() => id)
+}
+
+export function addShow(db: Db, show: ShowDefinitionType): Promise<number[]> {
+  if (show.id) {
+    throw new BadInput('Can not set id for insert!')
+  } else if (!show.tvdbId) {
+    throw new BadInput('tvdbId is required!')
+  }
+  return assertShowNotExist(db, show)
+    .then(() => mapDefinitionToDatabaseShow(show))
+    .then(dbShow =>
+      db.transaction(trx =>
+        trx(showTableName)
+          .insert(dbShow)
+          .then(() =>
+            db
+              .first('id')
+              .from(showTableName)
+              .where(getShowId(show))
+          )
+          .then(row => row.id)
+          .then(showId => addNewEpisodesInDb(trx, showId, show.episodes))
+      )
+    )
 }
 
 export async function findShow(

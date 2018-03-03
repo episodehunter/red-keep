@@ -18,6 +18,7 @@ const RootQuery = `
 const RootMutation = `
   type RootMutation {
     showUpdate(show: ShowInput!, removeMissingEpisodes: Boolean = true): Show
+    showAdd(show: ShowInput!): Show
   }
 `
 

@@ -1,12 +1,14 @@
 import { create } from 'chain-spy'
 import {
-  getShowIdFromDb,
+  assertShowExist,
+  assertShowNotExist,
   updateShow,
   findShow,
+  addShow,
   filterOutNonExistingShows
 } from '../show.db.util'
 
-describe('Get show id', () => {
+describe('Assert show exist', () => {
   test('Return show id', async () => {
     // Arrange
     const show = {
@@ -16,7 +18,7 @@ describe('Get show id', () => {
     const db = create({ where: () => Promise.resolve(dbRow) })
 
     // Act
-    const result = await getShowIdFromDb(db, show)
+    const result = await assertShowExist(db, show)
 
     // Assert
     expect(result).toBe(2)
@@ -31,7 +33,7 @@ describe('Get show id', () => {
     const db = create({ where: () => Promise.resolve(dbRow) })
 
     // Act and assert
-    return expect(getShowIdFromDb(db, show)).rejects.toEqual(expect.any(Error))
+    return expect(assertShowExist(db, show)).rejects.toEqual(expect.any(Error))
   })
 
   test('Make same request every time', async () => {
@@ -43,7 +45,50 @@ describe('Get show id', () => {
     const db = create({ where: () => Promise.resolve(dbRow) })
 
     // Act
-    await getShowIdFromDb(db, show)
+    await assertShowExist(db, show)
+
+    expect(db.__execution_log__).toMatchSnapshot()
+  })
+})
+
+describe('Assert show not exist', () => {
+  test('Return null', async () => {
+    // Arrange
+    const show = {
+      tvdbId: 5
+    }
+    const dbRow = null
+    const db = create({ where: () => Promise.resolve(dbRow) })
+
+    // Act
+    const result = await assertShowNotExist(db, show)
+
+    // Assert
+    expect(result).toBe(null)
+  })
+
+  test('Reject if exist', () => {
+    // Arrange
+    const show = {
+      tvdbId: 5
+    }
+    const dbRow = { id: 2 }
+    const db = create({ where: () => Promise.resolve(dbRow) })
+
+    // Act and assert
+    return expect(assertShowNotExist(db, show)).rejects.toEqual(expect.any(Error))
+  })
+
+  test('Make same request every time', async () => {
+    // Arrange
+    const show = {
+      tvdbId: 5
+    }
+    const dbRow = null
+    const db = create({ where: () => Promise.resolve(dbRow) })
+
+    // Act
+    await assertShowNotExist(db, show)
 
     expect(db.__execution_log__).toMatchSnapshot()
   })
@@ -77,6 +122,28 @@ test('Update show', async () => {
   // Assert
   expect(result).toBe(5)
   expect(db.__execution_log__).toMatchSnapshot()
+})
+
+describe('Add show', () => {
+  test('Throw if trying to set id', () => {
+    // Arrange
+    const show = {
+      id: 5
+    }
+
+    // Act and Assert
+    expect(() => addShow(null, show as any)).toThrow('Can not set id for insert!')
+  })
+
+  test('tvdbId is required', () => {
+    // Arrange
+    const show = {
+      tvdbId: undefined
+    }
+
+    // Act and Assert
+    expect(() => addShow(null, show as any)).toThrow('tvdbId is required!')
+  })
 })
 
 describe('Find show', () => {

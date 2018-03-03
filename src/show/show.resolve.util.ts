@@ -1,5 +1,6 @@
 import { ShowStatusType, ShowDatabaseType, ShowDefinitionType } from './show.type'
 import { safeStringSplit } from '../util'
+import { BadInput } from '../custom-error'
 
 export function convertStatusBoleanToString(ended?: boolean): ShowStatusType | undefined {
   if (typeof ended === 'boolean') {
@@ -29,7 +30,7 @@ export function getShowId(
   } else if (imdb_id || imdbId) {
     return { imdb_id: imdb_id || imdbId }
   }
-  throw new Error('Missing id for updating show')
+  throw new BadInput('Missing id for updating show')
 }
 
 export function mapDatabaseShowIdsToDefinition(ids: {
@@ -85,14 +86,5 @@ export function mapDefinitionToDatabaseShow(
     fanart: show.fanart,
     poster: show.poster,
     lastupdate: show.lastupdate
-  }
-}
-
-export function assertValue(msg: string) {
-  return (value?: any) => {
-    if (value) {
-      return value
-    }
-    throw new Error(msg)
   }
 }

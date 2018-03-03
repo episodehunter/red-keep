@@ -1,3 +1,4 @@
+import { BadInput } from '../../custom-error'
 import { EpisodeDefinitionType, EpisodeDatabaseType } from './episode.type'
 
 export function getEpisodeId(episode: Partial<EpisodeDatabaseType>) {
@@ -7,7 +8,7 @@ export function getEpisodeId(episode: Partial<EpisodeDatabaseType>) {
   } else if (tvdb_id) {
     return { tvdb_id }
   }
-  throw new Error('Missing id for updating episode')
+  throw new BadInput('Missing id for updating episode')
 }
 
 export function undefinedIfNull<T>(val: T): T | undefined {
