@@ -7,7 +7,7 @@ CREATE TABLE `tv_episode` (
   `season` int(2) NOT NULL,
   `episode` int(3) NOT NULL,
   `first_aired` varchar(10) NOT NULL DEFAULT '',
-  `overview` text CHARACTER SET utf8 NOT NULL,
+  `overview` text CHARACTER SET utf8,
   `image` varchar(50) DEFAULT '',
   `lastupdated` int(10) NOT NULL,
   PRIMARY KEY (`id`),

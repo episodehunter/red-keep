@@ -11,7 +11,7 @@ CREATE TABLE `tv_show` (
   `genre` varchar(255) NOT NULL DEFAULT '',
   `language` varchar(2) NOT NULL DEFAULT '',
   `network` varchar(20) NOT NULL DEFAULT '',
-  `overview` text CHARACTER SET utf8 NOT NULL,
+  `overview` text CHARACTER SET utf8,
   `runtime` int(3) NOT NULL DEFAULT '0',
   `status` varchar(10) NOT NULL DEFAULT 'TBA',
   `fanart` varchar(50) DEFAULT NULL,
