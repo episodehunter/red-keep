@@ -1,4 +1,3 @@
-import { makeExecutableSchema } from 'graphql-tools'
 import { graphqlExpress, graphiqlExpress } from 'apollo-server-express'
 import { json } from 'body-parser'
 import * as jwt from 'express-jwt'
@@ -9,35 +8,7 @@ import { engineSetup } from './engine'
 import { Context } from './types/context.type'
 import { connect } from './database'
 import { config } from './config'
-import { ShowDefinitions, ShowResolver } from './show'
-
-const SchemaDefinition = `
-  schema {
-    query: RootQuery,
-    mutation: RootMutation
-  }
-`
-
-const RootQuery = `
-  type RootQuery {
-    show(id: ID, tvdbId: Int, imdbId: String): Show
-    existingShows(tvdbIds: [Int]!): [ShowIds]
-  }
-`
-
-const RootMutation = `
-  type RootMutation {
-    showUpdate(show: ShowInput!, removeMissingEpisodes: Boolean = true): Show
-  }
-`
-
-const rootResolvers = ShowResolver
-
-const schema = makeExecutableSchema({
-  typeDefs: [SchemaDefinition, RootQuery, RootMutation, ...ShowDefinitions],
-  resolvers: rootResolvers as any,
-  allowUndefinedInResolve: false
-})
+import { schema } from './root-schema'
 
 const createJwtCheck = () =>
   jwt({
