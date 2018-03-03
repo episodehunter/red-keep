@@ -32,6 +32,7 @@ function formatError(error: any) {
   const errorId = Math.random()
   const errorObj = {
     errorId,
+    code: (error.originalError && error.originalError.name) || 'Error',
     message: error.message,
     locations: error.locations,
     stack: error.stack,
@@ -42,10 +43,11 @@ function formatError(error: any) {
   if (config.inDevelopMode) {
     return errorObj
   }
-  Raven.captureException(errorObj)
+  Raven.captureException(error.orginalError || errorObj)
   return {
-    message: 'This was bad',
-    errorId
+    message: error.message || 'This was bad',
+    errorId,
+    code: (error.originalError && error.originalError.name) || 'Error'
   }
 }
 
