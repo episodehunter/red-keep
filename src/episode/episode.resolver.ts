@@ -1,9 +1,8 @@
 import { map } from 'ramda'
-import { ShowDefinitionType } from '../show.type'
-import { Context } from '../../types/context.type'
-import { EpisodeDefinitionType } from './episode.type'
+import { Context, Db } from '../types/context.type'
+import { EpisodeDefinitionType } from '../root-type'
 import {
-  findAllepisodesInDb,
+  findAllepisodesForShowInDb,
   addNewEpisodesInDb,
   removeEpisodesInDb,
   updateEpisodesInDb
@@ -19,7 +18,7 @@ export function episodesUpdate(
   if (!Array.isArray(episodes) || episodes.length === 0) {
     return Promise.resolve([])
   }
-  return findAllepisodesInDb(db, showId)
+  return findAllepisodesForShowInDb(db, showId)
     .then(dbEpisodes => splitEpisodeList(dbEpisodes, episodes))
     .then(({ episodesToAdd, episodesToRemove, episodesToUpdate }) =>
       db.transaction(trx =>
@@ -52,17 +51,10 @@ export function episodesUpdate(
     )
 }
 
-export const EpisodeResolver = {
-  episodes: (
-    show: ShowDefinitionType,
-    args: { onlyMissingImages?: boolean },
-    context: Context
-  ) => {
-    return findAllepisodesInDb(context.db, show.id)
-      .then(map(mapDatabaseEpisodeToDefinition))
-      .then(
-        result =>
-          args.onlyMissingImages === true ? result.filter(epi => !epi.image) : result
-      )
-  }
+export function findEpisodesForShow(db: Db, showId: number, onlyMissingImages: boolean) {
+  return findAllepisodesForShowInDb(db, showId)
+    .then(map(mapDatabaseEpisodeToDefinition))
+    .then(
+      result => (onlyMissingImages === true ? result.filter(epi => !epi.image) : result)
+    )
 }

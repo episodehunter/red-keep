@@ -1,10 +1,10 @@
-import { Db, DbTransaction } from '../../types/context.type'
-import { EpisodeDefinitionType, EpisodeDatabaseType } from './episode.type'
+import { Db, DbTransaction } from '../types/context.type'
+import { EpisodeDefinitionType, EpisodeDatabaseType } from '../root-type'
 import { mapDefinitionEpisodeToDatabase, getEpisodeId } from './episode.resolve.util'
 
 const episodeTableName = 'tv_episode'
 
-export function findAllepisodesInDb(db: Db, showId: number) {
+export function findAllepisodesForShowInDb(db: Db, showId: number) {
   return db
     .select('*')
     .from(episodeTableName)

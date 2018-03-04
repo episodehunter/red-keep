@@ -1,14 +1,14 @@
 import { Maybe } from 'monet'
 import { BadInput, ShowExistError, ShowNotExistError } from '../custom-error'
 import { Db } from '../types/context.type'
-import { ShowDefinitionType } from './show.type'
+import { addNewEpisodesInDb } from '../episode/episode.db.util'
+import { ShowDefinitionType } from '../root-type'
 import {
   getShowId,
   mapDefinitionToDatabaseShow,
   mapDatabaseShowToDefinition,
   mapDatabaseShowIdsToDefinition
 } from './show.resolve.util'
-import { addNewEpisodesInDb } from './episode/episode.db.util'
 
 const showTableName = 'tv_show'
 

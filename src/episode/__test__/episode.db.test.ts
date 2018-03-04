@@ -1,6 +1,6 @@
 import { create } from 'chain-spy'
 import {
-  findAllepisodesInDb,
+  findAllepisodesForShowInDb,
   addNewEpisodesInDb,
   removeEpisodesInDb,
   updateEpisodesInDb
@@ -12,7 +12,7 @@ test('Find all episodes', () => {
   const db = create()
 
   // Act
-  findAllepisodesInDb(db, showId)
+  findAllepisodesForShowInDb(db, showId)
 
   // Assert
   expect(db.__execution_log__).toMatchSnapshot()

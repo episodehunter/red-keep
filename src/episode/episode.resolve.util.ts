@@ -1,5 +1,5 @@
-import { BadInput } from '../../custom-error'
-import { EpisodeDefinitionType, EpisodeDatabaseType } from './episode.type'
+import { BadInput } from '../custom-error'
+import { EpisodeDefinitionType, EpisodeDatabaseType } from '../root-type'
 
 export function getEpisodeId(episode: Partial<EpisodeDatabaseType>) {
   const { id, tvdb_id } = episode

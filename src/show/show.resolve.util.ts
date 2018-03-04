@@ -1,4 +1,4 @@
-import { ShowStatusType, ShowDatabaseType, ShowDefinitionType } from './show.type'
+import { ShowStatusType, ShowDatabaseType, ShowDefinitionType } from '../root-type'
 import { safeStringSplit } from '../util'
 import { BadInput } from '../custom-error'
 
