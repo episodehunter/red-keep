@@ -1,8 +1,9 @@
 import { Db, DbTransaction } from '../types/context.type'
-import { EpisodeDefinitionType, EpisodeDatabaseType } from '../root-type'
+import { EpisodeDefinitionType, EpisodeDatabaseType, EpisodeScrobble } from '../root-type'
 import { mapDefinitionEpisodeToDatabase, getEpisodeId } from './episode.resolve.util'
 
 const episodeTableName = 'tv_episode'
+const episodeWatchedTableName = 'tv_watched'
 
 export function findAllepisodesForShowInDb(db: Db, showId: number) {
   return db
@@ -51,4 +52,22 @@ export function updateEpisodesInDb(
         .where(getEpisodeId(episode))
     )
   )
+}
+
+export function registerEpisodeWatch(db: Db, episode: EpisodeScrobble): Promise<any> {
+  /*
+    xbmc_scrobble: 0
+    xbmc_sync: 1
+    check_in: 2
+    check_in_season: 3
+    plex_scrobble: 4
+  */
+  return db(episodeWatchedTableName).insert({
+    user_id: episode.userId,
+    serie_id: episode.showId,
+    season: episode.season,
+    episode: episode.episode,
+    type: 4,
+    time: (Date.now() / 1000) | 0
+  }) as any
 }

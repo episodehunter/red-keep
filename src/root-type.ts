@@ -71,3 +71,12 @@ export type ShowDefinitionType = {
   episodes?: EpisodeDefinitionType[]
   lastupdate: number
 }
+
+export interface FindUserInput {
+  username: string
+  apikey: string
+}
+
+export interface User {
+  id: number
+}

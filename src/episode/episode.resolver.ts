@@ -1,13 +1,15 @@
 import { map } from 'ramda'
 import { Context, Db } from '../types/context.type'
-import { EpisodeDefinitionType } from '../root-type'
+import { EpisodeDefinitionType, EpisodeScrobble } from '../root-type'
 import {
   findAllepisodesForShowInDb,
   addNewEpisodesInDb,
   removeEpisodesInDb,
-  updateEpisodesInDb
+  updateEpisodesInDb,
+  registerEpisodeWatch
 } from './episode.db.util'
 import { splitEpisodeList, mapDatabaseEpisodeToDefinition } from './episode.resolve.util'
+import { BadInput } from '../custom-error'
 
 export function episodesUpdate(
   showId: number,
@@ -57,4 +59,17 @@ export function findEpisodesForShow(db: Db, showId: number, onlyMissingImages: b
     .then(
       result => (onlyMissingImages === true ? result.filter(epi => !epi.image) : result)
     )
+}
+
+export function scrobbleEpisode(db: Db, episode: EpisodeScrobble) {
+  if (
+    episode.episode > 0 &&
+    episode.season > 0 &&
+    episode.showId > 0 &&
+    episode.userId > 0
+  ) {
+    return registerEpisodeWatch(db, episode)
+  } else {
+    throw new BadInput('Invalid episode to scrobble')
+  }
 }

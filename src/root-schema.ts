@@ -12,6 +12,7 @@ const RootQuery = `
   type RootQuery {
     show(id: ID, tvdbId: Int, imdbId: String): Show
     existingShows(tvdbIds: [Int]!): [ShowIds]
+    findApiUser(user: FindApiUserInput!): User
   }
 `
 
@@ -97,15 +98,25 @@ const Definitions = `
   }
 
   input ScrobbleEpisodeInput {
-    userId: Int!
-    showId: Int!
-    season: Int!
+    userId: Int!,
+    showId: Int!,
+    season: Int!,
     episode: Int!
   }
 
   type ScrobbleEpisodeResult {
     result: Boolean!
   }
+
+  input FindApiUserInput {
+    username: String!,
+    apikey: String!
+  }
+
+  type User {
+    id: Int!
+  }
+
 `
 
 export const schema = makeExecutableSchema({

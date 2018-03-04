@@ -1,8 +1,9 @@
 import { Context } from './types/context.type'
-import { ShowDefinitionType, EpisodeScrobble } from './root-type'
+import { ShowDefinitionType, EpisodeScrobble, FindUserInput } from './root-type'
 import { findShow, filterOutNonExistingShows } from './show/show.db.util'
 import { mutateShow, mutateAddShow } from './show/show.resolver'
-import { findEpisodesForShow } from './episode/episode.resolver'
+import { findEpisodesForShow, scrobbleEpisode } from './episode/episode.resolver'
+import { findApiUser } from './user/user.db.util'
 
 export const RootResolver = {
   RootQuery: {
@@ -16,6 +17,10 @@ export const RootResolver = {
 
     existingShows(obj: void, args: { tvdbIds: number[] }, context: Context) {
       return filterOutNonExistingShows(context.db, args.tvdbIds)
+    },
+
+    findApiUser(obj: void, args: { user: FindUserInput }, context: Context) {
+      return findApiUser(context.db, args.user.username, args.user.apikey)
     }
   },
 
@@ -35,7 +40,9 @@ export const RootResolver = {
       args: { episode: EpisodeScrobble },
       context: Context
     ) => {
-      return null
+      return scrobbleEpisode(context.db, args.episode).then(() => ({
+        result: true
+      }))
     }
   },
 
