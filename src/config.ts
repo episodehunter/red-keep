@@ -19,6 +19,7 @@ export const config = {
   logDna: {
     apiKey: process.env.LOGDNA_KEY
   },
+  apiKey: process.env.API_KEY || 'api-key',
   inDevelopMode: process.env.NODE_ENV === 'develop',
   port: 4000
 }

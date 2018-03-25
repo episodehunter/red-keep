@@ -19,6 +19,7 @@ const createJwtCheck = () =>
       jwksRequestsPerMinute: 5,
       jwksUri: `https://episodehunter.auth0.com/.well-known/jwks.json`
     }),
+    credentialsRequired: false,
 
     // Validate the audience and the issuer.
     audience: 'https://episodehunter.auth0.com/api/v2/',
@@ -28,6 +29,15 @@ const createJwtCheck = () =>
 
 const noop = (req: any, res: any, next: any) => next()
 const checkJwt = config.inDevelopMode ? noop : createJwtCheck()
+const checkApiKey = (req, res, next) => {
+  if (req.user) {
+    next()
+  } else if (req.headers['api-key'] !== config.apiKey) {
+    res.status(401).json({ error: 'unauthorised' })
+  } else {
+    next()
+  }
+}
 
 function formatError(error: any) {
   const errorId = Math.random()
@@ -70,6 +80,7 @@ app.get('/', (req, res) => {
 app.use(
   '/graphql',
   checkJwt,
+  checkApiKey,
   json({ limit: '500kb' }),
   graphqlExpress(req => ({
     schema,
