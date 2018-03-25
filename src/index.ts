@@ -33,7 +33,7 @@ const checkApiKey = (req, res, next) => {
   if (req.user) {
     next()
   } else if (req.headers['api-key'] !== config.apiKey) {
-    res.status(401).json({ error: 'unauthorised' })
+    res.status(401).json({ errors: [{ message: 'unauthorised' }] })
   } else {
     next()
   }
