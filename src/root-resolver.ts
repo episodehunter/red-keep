@@ -5,54 +5,69 @@ import { mutateShow, mutateAddShow } from './show/show.resolver'
 import { findEpisodesForShow, scrobbleEpisode } from './episode/episode.resolver'
 import { findApiUser } from './user/user.db.util'
 
+function rw<A = any, O = void>(
+  resolver: (obj: O, args: A, context: Context) => Promise<any>
+) {
+  return (obj, args, context: Context) => {
+    context.logger.log('Start resolver: ' + resolver.name)
+    return resolver(obj, args, context)
+      .then(value => {
+        context.logger.log('Resolver compleat: ' + resolver.name)
+        return value
+      })
+      .catch(error => {
+        context.logger.fatal(`Reolver (${resolver.name}) endeds with error: ${error}`)
+        return Promise.reject(error)
+      })
+  }
+}
+
+type Ids = { id?: number; tvdbId?: number; imdbId?: string }
+
 export const RootResolver = {
   RootQuery: {
-    show(
-      obj: void,
-      args: { id?: number; tvdbId?: number; imdbId?: string },
-      context: Context
-    ) {
+    show: rw<Ids>(function show(obj, args, context) {
       return findShow(context.db, args)
-    },
+    }),
 
-    existingShows(obj: void, args: { tvdbIds: number[] }, context: Context) {
+    existingShows: rw<{ tvdbIds: number[] }>(function existingShows(obj, args, context) {
       return filterOutNonExistingShows(context.db, args.tvdbIds)
-    },
+    }),
 
-    findApiUser(obj: void, args: { user: FindUserInput }, context: Context) {
+    findApiUser: rw<{ user: FindUserInput }>(function findApiUserRes(obj, args, context) {
       return findApiUser(context.db, args.user.username, args.user.apikey)
-    }
+    })
   },
 
   RootMutation: {
-    showUpdate(
-      obj,
-      args: { show: Partial<ShowDefinitionType>; removeMissingEpisodes: true },
-      context: Context
-    ) {
-      return mutateShow(args, context)
-    },
-    showAdd(obj, args: { show: ShowDefinitionType }, context: Context) {
+    showUpdate: rw<{ show: Partial<ShowDefinitionType>; removeMissingEpisodes: true }>(
+      function showUpdate(obj, args, context) {
+        return mutateShow(args, context)
+      }
+    ),
+
+    showAdd: rw<{ show: ShowDefinitionType }>(function showAdd(obj, args, context) {
       return mutateAddShow(args, context)
-    },
-    scrobbleEpisode: (
-      obj: void,
-      args: { episode: EpisodeScrobble },
-      context: Context
-    ) => {
+    }),
+
+    scrobbleEpisode: rw<{ episode: EpisodeScrobble }>(function scrobbleEpisodeRes(
+      obj,
+      args,
+      context
+    ) {
       return scrobbleEpisode(context.db, args.episode).then(() => ({
         result: true
       }))
-    }
+    })
   },
 
   Show: {
-    episodes: (
-      show: ShowDefinitionType,
-      args: { onlyMissingImages?: boolean },
-      context: Context
-    ) => {
-      return findEpisodesForShow(context.db, show.id, args.onlyMissingImages)
-    }
+    episodes: rw<{ onlyMissingImages?: boolean }, ShowDefinitionType>(
+      function episodesRes(obj, args, context) {
+        return findEpisodesForShow(context.db, obj.id, args.onlyMissingImages) as Promise<
+          any
+        >
+      }
+    )
   }
 }

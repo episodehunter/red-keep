@@ -53,12 +53,16 @@ export function episodesUpdate(
     )
 }
 
-export function findEpisodesForShow(db: Db, showId: number, onlyMissingImages: boolean) {
+export function findEpisodesForShow(
+  db: Db,
+  showId: number,
+  onlyMissingImages: boolean
+): Promise<EpisodeDefinitionType[]> {
   return findAllepisodesForShowInDb(db, showId)
     .then(map(mapDatabaseEpisodeToDefinition))
     .then(
       result => (onlyMissingImages === true ? result.filter(epi => !epi.image) : result)
-    )
+    ) as any
 }
 
 export function scrobbleEpisode(db: Db, episode: EpisodeScrobble) {
@@ -70,6 +74,6 @@ export function scrobbleEpisode(db: Db, episode: EpisodeScrobble) {
   ) {
     return registerEpisodeWatch(db, episode)
   } else {
-    throw new BadInput('Invalid episode to scrobble')
+    return Promise.reject(new BadInput('Invalid episode to scrobble'))
   }
 }

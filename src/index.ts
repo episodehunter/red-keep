@@ -9,6 +9,7 @@ import { Context } from './types/context.type'
 import { connect } from './database'
 import { config } from './config'
 import { schema } from './root-schema'
+import { getLogger } from './logger'
 
 const createJwtCheck = () =>
   jwt({
@@ -73,7 +74,8 @@ app.use(
   graphqlExpress(req => ({
     schema,
     context: {
-      db: connect()
+      db: connect(),
+      logger: getLogger(String(req.headers['request-id']))
     } as Context,
     formatError,
     tracing: true,
