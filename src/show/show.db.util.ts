@@ -75,13 +75,7 @@ export function addShow(db: Db, show: ShowDefinitionType): Promise<number[]> {
       db.transaction(trx =>
         trx(showTableName)
           .insert(dbShow)
-          .then(() =>
-            db
-              .first('id')
-              .from(showTableName)
-              .where(getShowId(show))
-          )
-          .then(row => row.id)
+          .then(insertIds => insertIds[0])
           .then(showId => addNewEpisodesInDb(trx, showId, show.episodes))
       )
     )
