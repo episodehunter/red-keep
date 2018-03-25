@@ -1,10 +1,10 @@
-import { graphqlExpress, graphiqlExpress } from 'apollo-server-express'
+import { graphqlExpress } from 'apollo-server-express'
 import { json } from 'body-parser'
 import * as jwt from 'express-jwt'
 import * as jwksRsa from 'jwks-rsa'
 import * as express from 'express'
 import * as Raven from 'raven'
-import { engineSetup } from './engine'
+import { engineStart } from './engine'
 import { Context } from './types/context.type'
 import { connect } from './database'
 import { config } from './config'
@@ -64,8 +64,6 @@ function formatError(error: any) {
 
 const app = express()
 
-engineSetup(app)
-
 if (!config.inDevelopMode) {
   Raven.config(`https://${config.raven.dsn}@sentry.io/${config.raven.project}`, {
     autoBreadcrumbs: false
@@ -94,11 +92,6 @@ app.use(
   }))
 )
 
-if (config.inDevelopMode) {
-  // GraphiQL, a visual editor for queries
-  app.use('/graphiql', graphiqlExpress({ endpointURL: '/graphql' }))
-}
-
 app.use(Raven.errorHandler())
 
 app.use((err: any, req: any, res: any, next: any) => {
@@ -109,6 +102,10 @@ app.use((err: any, req: any, res: any, next: any) => {
 })
 
 const hostname = 'localhost'
-app.listen(config.port, hostname, () => {
-  console.log(`Running a GraphQL API server at ${hostname}:${config.port}/graphql`)
-})
+if (config.inDevelopMode) {
+  app.listen(config.port, hostname, () => {
+    console.log(`Running a GraphQL API server at ${hostname}:${config.port}/graphql`)
+  })
+} else {
+  engineStart(hostname, app)
+}
