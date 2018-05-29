@@ -73,5 +73,25 @@
       "<rootDir>/node_modules/",
       "<rootDir>/.*\\.definition\\.ts$"
     ]
+  },
+  "now": {
+    "name": "episodehunter-red-keep",
+    "alias": "episodehunter-red-keep",
+    "files": [
+      "dist"
+    ],
+    "env": {
+      "EH_DB_HOST": "@eh-db-host",
+      "EH_DB_USERNAME": "@eh-db-username",
+      "EH_DB_PASSWORD": "@eh-db-password",
+      "EH_DB_DATABASE": "@eh-db-database",
+      "EH_DB_PORT": "@eh-db-port",
+      "EH_RAVEN_DSN": "@eh-raven-dsn",
+      "EH_RAVEN_PROJECT": "@eh-raven-project",
+      "LOGDNA_KEY": "@logdna-key",
+      "API_KEY": "@red-keep-api-key",
+      "APOLLO_ENGINE_API_KEY": "@red-keep-apollo-engine-api-key",
+      "NODE_ENV": "production"
+    }
   }
 }
