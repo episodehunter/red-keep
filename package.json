@@ -76,7 +76,7 @@
   },
   "now": {
     "name": "episodehunter-red-keep",
-    "alias": "episodehunter-red-keep",
+    "alias": "redkeep.episodehunter.tv",
     "files": [
       "dist"
     ],
@@ -92,6 +92,16 @@
       "API_KEY": "@red-keep-api-key",
       "APOLLO_ENGINE_API_KEY": "@red-keep-apollo-engine-api-key",
       "NODE_ENV": "production"
+    },
+    "scale": {
+      "sfo1": {
+        "min": 1,
+        "max": "auto"
+      },
+      "bru1": {
+        "min": 1,
+        "max": "auto"
+      }
     }
   }
 }
