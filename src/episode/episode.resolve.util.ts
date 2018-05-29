@@ -1,3 +1,4 @@
+import { uniqWith } from 'ramda'
 import { BadInput } from '../custom-error'
 import { EpisodeDefinitionType, EpisodeDatabaseType } from '../root-type'
 
@@ -51,6 +52,16 @@ export function mapDefinitionEpisodeToDatabase(
     image: undefinedIfNull(episode.image),
     lastupdated: undefinedIfNull(episode.lastupdated)
   }
+}
+
+export function isSameDefEpisode(a: EpisodeDefinitionType, b: EpisodeDefinitionType) {
+  return a.tvdbId === b.tvdbId
+}
+
+export function removeDuplicatesEpisode(
+  episodes: EpisodeDefinitionType[]
+): EpisodeDefinitionType[] {
+  return uniqWith(isSameDefEpisode, episodes)
 }
 
 export function isSameEpisode(

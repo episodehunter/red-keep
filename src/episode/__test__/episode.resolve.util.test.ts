@@ -2,7 +2,9 @@ import {
   getEpisodeId,
   undefinedIfNull,
   isSameEpisode,
-  splitEpisodeList
+  splitEpisodeList,
+  isSameDefEpisode,
+  removeDuplicatesEpisode
 } from '../episode.resolve.util'
 
 describe('Get episode id', () => {
@@ -163,4 +165,41 @@ test('Split episode array', () => {
   expect(result.episodesToRemove[0].tvdb_id).toBe(3)
   expect(result.episodesToUpdate.length).toBe(1)
   expect(result.episodesToUpdate[0].tvdbId).toBe(2)
+})
+
+test('Is same def episode', () => {
+  // Arrange
+  const a = { tvdbId: 123 }
+  const b = { tvdbId: 123 }
+
+  // Act
+  const result = isSameDefEpisode(a as any, b as any)
+
+  // Assert
+  expect(result).toBe(true)
+})
+
+test('Is not same def episode', () => {
+  // Arrange
+  const a = { tvdbId: 124 }
+  const b = { tvdbId: 123 }
+
+  // Act
+  const result = isSameDefEpisode(a as any, b as any)
+
+  // Assert
+  expect(result).toBe(false)
+})
+
+test('Remove duplicate episode', () => {
+  // Arrange
+  const episodes = [{ tvdbId: 123 }, { tvdbId: 124 }, { tvdbId: 123 }]
+
+  // Act
+  const result = removeDuplicatesEpisode(episodes as any)
+
+  // Assert
+  expect(result.length).toBe(2)
+  expect(result[0].tvdbId).toBe(123)
+  expect(result[1].tvdbId).toBe(124)
 })

@@ -8,7 +8,11 @@ import {
   updateEpisodesInDb,
   registerEpisodeWatch
 } from './episode.db.util'
-import { splitEpisodeList, mapDatabaseEpisodeToDefinition } from './episode.resolve.util'
+import {
+  splitEpisodeList,
+  mapDatabaseEpisodeToDefinition,
+  removeDuplicatesEpisode
+} from './episode.resolve.util'
 import { BadInput } from '../custom-error'
 
 export function episodesUpdate(
@@ -21,7 +25,7 @@ export function episodesUpdate(
     return Promise.resolve([])
   }
   return findAllepisodesForShowInDb(db, showId)
-    .then(dbEpisodes => splitEpisodeList(dbEpisodes, episodes))
+    .then(dbEpisodes => splitEpisodeList(dbEpisodes, removeDuplicatesEpisode(episodes)))
     .then(({ episodesToAdd, episodesToRemove, episodesToUpdate }) =>
       db.transaction(trx =>
         // Delete epsiodes before we add and update due to dublet problems
