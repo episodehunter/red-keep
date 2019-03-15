@@ -1,7 +1,7 @@
 {
   "name": "red-keep",
   "description": "GraphQL interface for episodehunters database",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "scripts": {
     "test": "jest",
     "test:watch": "jest --watch",
@@ -73,35 +73,5 @@
       "<rootDir>/node_modules/",
       "<rootDir>/.*\\.definition\\.ts$"
     ]
-  },
-  "now": {
-    "name": "episodehunter-red-keep",
-    "alias": "redkeep.episodehunter.tv",
-    "files": [
-      "dist"
-    ],
-    "env": {
-      "EH_DB_HOST": "@eh-db-host",
-      "EH_DB_USERNAME": "@eh-db-username",
-      "EH_DB_PASSWORD": "@eh-db-password",
-      "EH_DB_DATABASE": "@eh-db-database",
-      "EH_DB_PORT": "@eh-db-port",
-      "EH_RAVEN_DSN": "@eh-raven-dsn",
-      "EH_RAVEN_PROJECT": "@eh-raven-project",
-      "LOGDNA_KEY": "@logdna-key",
-      "API_KEY": "@red-keep-api-key",
-      "APOLLO_ENGINE_API_KEY": "@red-keep-apollo-engine-api-key",
-      "NODE_ENV": "production"
-    },
-    "scale": {
-      "sfo1": {
-        "min": 1,
-        "max": "auto"
-      },
-      "bru1": {
-        "min": 1,
-        "max": "auto"
-      }
-    }
   }
 }
