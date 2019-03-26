@@ -79,7 +79,7 @@ app.use(
   '/graphql',
   checkJwt,
   checkApiKey,
-  json({ limit: '500kb' }),
+  json({ limit: '1000kb' }),
   graphqlExpress(req => ({
     schema,
     context: {
