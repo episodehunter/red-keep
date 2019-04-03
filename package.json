@@ -25,7 +25,7 @@
     "graphql-tools": "^2.23.1",
     "jwks-rsa": "^1.2.1",
     "knex": "^0.14.4",
-    "logdna": "^2.0.0",
+    "logdna": "^3.0.0",
     "monet": "^0.9.0-alpha.4",
     "mysql": "^2.15.0",
     "ramda": "^0.25.0",
