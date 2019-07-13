@@ -30,7 +30,7 @@
     "mysql": "^2.15.0",
     "ramda": "^0.25.0",
     "raven": "^2.4.2",
-    "simple-spy": "^2.2.1"
+    "simple-spy": "^3.0.0"
   },
   "devDependencies": {
     "@types/express": "^4.11.1",
